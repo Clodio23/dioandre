@@ -37,16 +37,51 @@
         <div class="col-12 my-auto">
           <div class="masthead-content text-white py-5 py-md-0">
             <h1 class="mb-5">Green Moluscca</h1>
-             <form class="form-signin" method="post" action="model/proses.php">
-       <center><h2 class="form-signin-heading" style="font-family: ariel;">Login Devisi </h2></center> 
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus>
-        <br>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="pwd" id="inputPassword" class="form-control" placeholder="Password" required="">
-    
-        <input class="btn btn-lg btn-primary btn-block" type="submit" name="login" value="Sign-in">
-      </form>
+                <form class="form-signin" method="post" name="laporan-mingguan-dan-bulanan" action="<? url ?>">
+              <center>
+                <h2 class="form-signin-heading" style="font-family: ariel;">Laporan Bulanan dan Mingguan</h2>
+              </center>
+
+              <label for="inputEmail" class="sr-only">Nama</label>
+              <input type="nama" name="nama" id="nama" class="form-control" placeholder="Masukan Nama" required="" autofocus>
+              <br>
+              <label for="inputEmail" class="sr-only">Email address</label>
+              <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus>
+              <br>
+              <h4 class="forform-signin-heading" style="font-family: ariel;">Jenis Laporan</h4>
+              <input type="checkbox" id="telepon" name="jenis_laporan" id="mingguan" value="mingguan">
+              <label name="jenis_laporan" class="form-check-label" for="jenis_laporan">
+                Mingguan
+              </label>
+              <input type="checkbox" id="telepon" name="jenis_laporan" id="bulanan" value="bulanan">
+              <label name="jenis_laporan" class="form-check-label" for="jenis_laporan">
+                Bulanan
+              </label>
+
+
+              <br>
+              <br>
+              <div>
+                <h4 class="forform-signin-heading" style="font-family: ariel;">Pilih Devisi & Masukan File Laporan</h4>
+                <select style="margin-bottom: 20px;" id="country" name="devisi">
+                  <option>Admin</option>
+                  <option>Socio Enterprise</option>
+              </div>
+              <div>
+
+                <input type="file" name="file" onchange="LoadFile(event)" />
+                <input type="hidden" id="fileData" name="fileData" />
+                <input type="hidden" id="mimeType" name="mimeType" />
+                <input type="hidden" id="fileName" name="fileName" />
+              </div>
+              <br>
+
+              <button class="btn btn-lg btn-primary btn-kirim" type="submit" name="login" value="Kirim">kirim</button>
+              <button class="btn btn-primary btn-loading d-none" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+              </button>
+            </form>
             <p class="mb-5"></p>
             <div class="input-group input-group-newsletter">
               <input type="email" class="form-control" placeholder="Enter email..." aria-label="Enter email..." aria-describedby="submit-button">
@@ -86,6 +121,36 @@
 
   <!-- Custom scripts for this template -->
   <script src="js/coming-soon.min.js"></script>
+
+   <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxF8BdrXAxzSWMAhMbzGAXh4ztC0g0pLxkt-TXxy4MjpyntGTFDWtlS1ud7kJYZKpq53Q/exec'
+    const form = document.forms['laporan-mingguan-dan-bulanan'];
+    const btnKirim = document.querySelector('.btn-kirim');
+    const btnLoading = document.querySelector('.btn-loading');
+    const myAlert = document.querySelector('.my-alert');
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      //ketika tombol submit di klik
+      // tampilkan tombol loading, hilangkn tombol kirim
+      btnLoading.classList.toggle('d-none');
+      btnKirim.classList.toggle('d-none');
+      fetch(scriptURL, {
+          method: 'POST',
+          body: new FormData(form)
+        })
+        .then(response => {
+          // tampilkan tombol Kirim, hilangkn tombol Loading
+          btnLoading.classList.toggle('d-none');
+          btnKirim.classList.toggle('d-none');
+          //tampilkan my alert
+          myAlert.classList.toggle('d-none');
+          //reset formnyat
+          form.reset();
+          console.log('Success!', response)
+        })
+        .catch(error => console.error('Error!', error.message))
+    })
+  </script>
 
 </body>
 
